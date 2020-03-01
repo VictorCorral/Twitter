@@ -1,0 +1,51 @@
+#install.packages("twitteR")
+#install.packages("ROAuth")
+#install.packages("rtweet")
+#install.packages("dplyr")
+#install.packages("ggplot2")
+#install.packages("plyr")
+#install.packages("tidyr")
+#install.packages("gmodels")
+#install.packages("readr")
+
+library(twitteR)
+library(ROAuth)
+library(httr)
+
+#Otro paquete para extraer dato de Twitter
+library(rtweet)
+library(plyr)
+library(dplyr)
+library(ggplot2)
+library(readr)
+library(tidyr)
+library(gmodels)
+library(readr)
+
+
+# Cargar las credenciales
+consumer_key <-"xxx"
+consumer_secret <-"xxx"
+access_token <-"xxx"
+access_secret <-"xxx"
+
+
+options(httr_oauth_cache=TRUE)
+setup_twitter_oauth(consumer_key = consumer_key, consumer_secret = consumer_secret,
+                    access_token = access_token, access_secret = access_secret)
+
+
+#Sacar información de un usuario:
+usuario<- getUser('@Usuario')
+
+#conseguir sus seguidores
+usuario_seguidores <- usuario$getFollowers(retryOnRateLimit=100)
+
+
+#No es un dataframe. Necesitamos convertirlo en un dataframe:
+usuario_seguidores2 <- twListToDF(usuario_seguidores)
+
+
+#Lo exporto en un csv:
+write_as_csv(usuario_seguidores2, "C:/Users/usuario/Documents/Datos RStudio/usuario_seguidores.csv", prepend_ids = TRUE, na = "", fileEncoding = "UTF-8")
+
